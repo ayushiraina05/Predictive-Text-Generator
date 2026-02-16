@@ -34,32 +34,25 @@
 
     <div id="output"></div>
 
-    <script>
-        <script>
+   <script>
+    // Default training data
+    let trainingText = `
+    i am learning machine learning
+    i love coding and programming
+    do you like machine learning
+    how are you doing today
+    machine learning is powerful
+    `;
+
     function predictText() {
         let inputText = document.getElementById("userInput").value.toLowerCase().trim();
         let words = inputText.split(" ");
         let lastWord = words[words.length - 1];
 
-        // Training dataset (can be expanded)
-        let trainingText = `
-        i am learning machine learning
-        i am learning web development
-        i love coding and programming
-        do you like machine learning
-        do you want to learn coding
-        how are you doing today
-        machine learning is very powerful
-        we are building predictive text model
-        you are doing great work
-        they are learning javascript
-        `;
-
         let tokens = trainingText.toLowerCase().split(/\s+/);
 
         let predictions = [];
 
-        // Bigram logic
         for (let i = 0; i < tokens.length - 1; i++) {
             if (tokens[i] === lastWord) {
                 predictions.push(tokens[i + 1]);
@@ -77,9 +70,18 @@
 
         document.getElementById("output").innerText = "Suggestion: " + result;
     }
+
+    function addSentence() {
+        let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
+
+        if (newSentence !== "") {
+            trainingText += " " + newSentence;
+            document.getElementById("customInput").value = "";
+            alert("Sentence added successfully!");
+        }
+    }
 </script>
 
-    </script>
 
 </body>
 </html>
