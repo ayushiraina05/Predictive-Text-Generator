@@ -34,25 +34,70 @@
 
     <div id="output"></div>
 
+    <br><br>
+    <h3>Add Custom Sentence</h3>
+    <input type="text" id="customInput" placeholder="Enter new sentence">
+    <br><br>
+    <button onclick="addSentence()">Add Sentence</button>
+
     <script>
+        let trainingText = `
+        how old are you
+        how are you doing today
+        i am learning machine learning
+        do you like programming
+        machine learning is very powerful
+        `;
+
         function predictText() {
-            let text = document.getElementById("userInput").value.toLowerCase();
-            let result = "";
+            let inputText = document.getElementById("userInput").value.toLowerCase().trim();
+            let words = inputText.split(" ");
 
-            if (text.includes("i love")) {
-                result = "coding ❤️";
-            } 
-            else if (text.includes("i am")) {
-                result = "learning web development 🚀";
-            }
-            else if (text.includes("hello")) {
-                result = "how are you?";
-            }
-            else {
-                result = "Try typing: I love / I am / Hello";
+            if (words.length < 2) {
+                document.getElementById("output").innerText = "Type at least 2 words";
+                return;
             }
 
-            document.getElementById("output").innerText = "Suggestion: " + result;
+            let lastTwo = words.slice(-2).join(" ");
+            let tokens = trainingText.toLowerCase().split(/\s+/);
+
+            let firstPrediction = "";
+            let secondPrediction = "";
+
+            for (let i = 0; i < tokens.length - 2; i++) {
+                if (tokens[i] + " " + tokens[i+1] === lastTwo) {
+                    firstPrediction = tokens[i+2];
+                    break;
+                }
+            }
+
+            if (firstPrediction === "") {
+                document.getElementById("output").innerText = "No suggestion available";
+                return;
+            }
+
+            for (let i = 0; i < tokens.length - 2; i++) {
+                if (tokens[i] === words[words.length-1] && tokens[i+1] === firstPrediction) {
+                    secondPrediction = tokens[i+2];
+                    break;
+                }
+            }
+
+            let finalPrediction = firstPrediction;
+            if (secondPrediction !== "") {
+                finalPrediction += " " + secondPrediction;
+            }
+
+            document.getElementById("output").innerText = "Suggestion: " + finalPrediction;
+        }
+
+        function addSentence() {
+            let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
+            if (newSentence !== "") {
+                trainingText += " " + newSentence;
+                document.getElementById("customInput").value = "";
+                alert("Sentence added successfully!");
+            }
         }
     </script>
 
