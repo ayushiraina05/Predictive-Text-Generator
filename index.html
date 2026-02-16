@@ -54,52 +54,59 @@
     <div id="output"></div>
 
    <script>
-    // Default training data
     let trainingText = `
-    i am learning machine learning
-    i love coding and programming
-    do you like machine learning
+    how old are you
     how are you doing today
-    machine learning is powerful
+    i am learning machine learning
+    do you like programming
+    machine learning is very powerful
     `;
 
     function predictText() {
         let inputText = document.getElementById("userInput").value.toLowerCase().trim();
         let words = inputText.split(" ");
-        let lastWord = words[words.length - 1];
+
+        if (words.length < 2) {
+            document.getElementById("output").innerText = "Type at least 2 words";
+            return;
+        }
+
+        let lastTwo = words.slice(-2).join(" ");
 
         let tokens = trainingText.toLowerCase().split(/\s+/);
 
-        let predictions = [];
+        let resultWords = [];
 
-        for (let i = 0; i < tokens.length - 1; i++) {
-            if (tokens[i] === lastWord) {
-                predictions.push(tokens[i + 1]);
+        for (let i = 0; i < tokens.length - 2; i++) {
+            if (tokens[i] + " " + tokens[i+1] === lastTwo) {
+                resultWords.push(tokens[i+2]);
             }
         }
 
-        let result = "";
+        if (resultWords.length > 0) {
+            let firstWord = resultWords[Math.floor(Math.random() * resultWords.length)];
 
-        if (predictions.length > 0) {
-            let randomIndex = Math.floor(Math.random() * predictions.length);
-            result = predictions[randomIndex];
+            // Find next word for second prediction
+            let secondWord = "";
+            for (let i = 0; i < tokens.length - 2; i++) {
+                if (tokens[i] === words[words.length-1] && tokens[i+1] === firstWord) {
+                    secondWord = tokens[i+2];
+                    break;
+                }
+            }
+
+            let finalPrediction = firstWord;
+            if (secondWord !== "") {
+                finalPrediction += " " + secondWord;
+            }
+
+            document.getElementById("output").innerText = "Suggestion: " + finalPrediction;
         } else {
-            result = "No suggestion available";
-        }
-
-        document.getElementById("output").innerText = "Suggestion: " + result;
-    }
-
-    function addSentence() {
-        let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
-
-        if (newSentence !== "") {
-            trainingText += " " + newSentence;
-            document.getElementById("customInput").value = "";
-            alert("Sentence added successfully!");
+            document.getElementById("output").innerText = "No suggestion available";
         }
     }
 </script>
+
 
 
 </body>
