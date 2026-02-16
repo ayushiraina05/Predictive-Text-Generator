@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Predictive Text Generator</title>
-
     <style>
         body {
             font-family: Arial;
@@ -10,17 +9,14 @@
             margin-top: 100px;
             background-color: #f4f4f4;
         }
-
         input {
             padding: 10px;
             width: 300px;
         }
-
         button {
             padding: 10px 20px;
             cursor: pointer;
         }
-
         #output {
             margin-top: 20px;
             font-size: 20px;
@@ -28,7 +24,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <h1>Predictive Text Generator</h1>
@@ -46,19 +41,15 @@
     <button onclick="addSentence()">Add Sentence</button>
 
     <script>
-
-        // Initial training data
         let trainingText = `
         how old are you
         how are you doing today
         i am learning machine learning
         do you like programming
         machine learning is very powerful
-        we are building predictive text system
         `;
 
         function predictText() {
-
             let inputText = document.getElementById("userInput").value.toLowerCase().trim();
             let words = inputText.split(" ");
 
@@ -73,7 +64,6 @@
             let firstPrediction = "";
             let secondPrediction = "";
 
-            // Find first predicted word
             for (let i = 0; i < tokens.length - 2; i++) {
                 if (tokens[i] + " " + tokens[i+1] === lastTwo) {
                     firstPrediction = tokens[i+2];
@@ -86,7 +76,6 @@
                 return;
             }
 
-            // Find second predicted word
             for (let i = 0; i < tokens.length - 2; i++) {
                 if (tokens[i] === words[words.length-1] && tokens[i+1] === firstPrediction) {
                     secondPrediction = tokens[i+2];
@@ -104,14 +93,12 @@
 
         function addSentence() {
             let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
-
             if (newSentence !== "") {
                 trainingText += " " + newSentence;
                 document.getElementById("customInput").value = "";
                 alert("Sentence added successfully!");
             }
         }
-
     </script>
 
 </body>
