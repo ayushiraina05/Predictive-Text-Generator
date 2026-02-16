@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Predictive Text Generator</title>
+
     <style>
         body {
             font-family: Arial;
@@ -9,14 +10,17 @@
             margin-top: 100px;
             background-color: #f4f4f4;
         }
+
         input {
             padding: 10px;
             width: 300px;
         }
+
         button {
             padding: 10px 20px;
             cursor: pointer;
         }
+
         #output {
             margin-top: 20px;
             font-size: 20px;
@@ -24,6 +28,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <h1>Predictive Text Generator</h1>
@@ -31,83 +36,83 @@
     <input type="text" id="userInput" placeholder="Type something...">
     <br><br>
     <button onclick="predictText()">Predict</button>
-    <h1>Predictive Text Generator</h1>
-
-<input type="text" id="userInput" placeholder="Type something...">
-<br><br>
-<button onclick="predictText()">Predict</button>
-
-<!-- 👇 YAHAN ADD KARNA HAI -->
-
-<br><br>
-<h3>Add Custom Sentence</h3>
-<input type="text" id="customInput" placeholder="Enter new sentence">
-<br><br>
-<button onclick="addSentence()">Add Sentence</button>
-
-<div id="output"></div>
-
-<!-- 👇 Script iske neeche rahega -->
-<script>
-
 
     <div id="output"></div>
 
-   <script>
-    let trainingText = `
-    how old are you
-    how are you doing today
-    i am learning machine learning
-    do you like programming
-    machine learning is very powerful
-    `;
+    <br><br>
+    <h3>Add Custom Sentence</h3>
+    <input type="text" id="customInput" placeholder="Enter new sentence">
+    <br><br>
+    <button onclick="addSentence()">Add Sentence</button>
 
-    function predictText() {
-        let inputText = document.getElementById("userInput").value.toLowerCase().trim();
-        let words = inputText.split(" ");
+    <script>
 
-        if (words.length < 2) {
-            document.getElementById("output").innerText = "Type at least 2 words";
-            return;
-        }
+        // Initial training data
+        let trainingText = `
+        how old are you
+        how are you doing today
+        i am learning machine learning
+        do you like programming
+        machine learning is very powerful
+        we are building predictive text system
+        `;
 
-        let lastTwo = words.slice(-2).join(" ");
+        function predictText() {
 
-        let tokens = trainingText.toLowerCase().split(/\s+/);
+            let inputText = document.getElementById("userInput").value.toLowerCase().trim();
+            let words = inputText.split(" ");
 
-        let resultWords = [];
-
-        for (let i = 0; i < tokens.length - 2; i++) {
-            if (tokens[i] + " " + tokens[i+1] === lastTwo) {
-                resultWords.push(tokens[i+2]);
+            if (words.length < 2) {
+                document.getElementById("output").innerText = "Type at least 2 words";
+                return;
             }
-        }
 
-        if (resultWords.length > 0) {
-            let firstWord = resultWords[Math.floor(Math.random() * resultWords.length)];
+            let lastTwo = words.slice(-2).join(" ");
+            let tokens = trainingText.toLowerCase().split(/\s+/);
 
-            // Find next word for second prediction
-            let secondWord = "";
+            let firstPrediction = "";
+            let secondPrediction = "";
+
+            // Find first predicted word
             for (let i = 0; i < tokens.length - 2; i++) {
-                if (tokens[i] === words[words.length-1] && tokens[i+1] === firstWord) {
-                    secondWord = tokens[i+2];
+                if (tokens[i] + " " + tokens[i+1] === lastTwo) {
+                    firstPrediction = tokens[i+2];
                     break;
                 }
             }
 
-            let finalPrediction = firstWord;
-            if (secondWord !== "") {
-                finalPrediction += " " + secondWord;
+            if (firstPrediction === "") {
+                document.getElementById("output").innerText = "No suggestion available";
+                return;
+            }
+
+            // Find second predicted word
+            for (let i = 0; i < tokens.length - 2; i++) {
+                if (tokens[i] === words[words.length-1] && tokens[i+1] === firstPrediction) {
+                    secondPrediction = tokens[i+2];
+                    break;
+                }
+            }
+
+            let finalPrediction = firstPrediction;
+            if (secondPrediction !== "") {
+                finalPrediction += " " + secondPrediction;
             }
 
             document.getElementById("output").innerText = "Suggestion: " + finalPrediction;
-        } else {
-            document.getElementById("output").innerText = "No suggestion available";
         }
-    }
-</script>
 
+        function addSentence() {
+            let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
 
+            if (newSentence !== "") {
+                trainingText += " " + newSentence;
+                document.getElementById("customInput").value = "";
+                alert("Sentence added successfully!");
+            }
+        }
+
+    </script>
 
 </body>
 </html>
