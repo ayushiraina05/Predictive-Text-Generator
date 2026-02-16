@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predictive Text Generator</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f4f4f4;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Predictive Text Generator</h1>
+
+    <input type="text" id="userInput" placeholder="Type something...">
+    <br><br>
+    <button onclick="predictText()">Predict</button>
+
+    <div id="output"></div>
+
+    <script>
+        function predictText() {
+            let text = document.getElementById("userInput").value.toLowerCase();
+            let result = "";
+
+            if (text.includes("i love")) {
+                result = "coding ❤️";
+            } 
+            else if (text.includes("i am")) {
+                result = "learning web development 🚀";
+            }
+            else if (text.includes("hello")) {
+                result = "how are you?";
+            }
+            else {
+                result = "Try typing: I love / I am / Hello";
+            }
+
+            document.getElementById("output").innerText = "Suggestion: " + result;
+        }
+    </script>
+
+</body>
+</html>
