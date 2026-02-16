@@ -40,66 +40,73 @@
     <br><br>
     <button onclick="addSentence()">Add Sentence</button>
 
-    <script>
-        let trainingText = `
-        how old are you
-        how are you doing today
-        i am learning machine learning
-        do you like programming
-        machine learning is very powerful
-        `;
+   <script>
 
-        function predictText() {
-            let inputText = document.getElementById("userInput").value.toLowerCase().trim();
-            let words = inputText.split(" ");
+let trainingText = [
+"how old are you",
+"how are you doing today",
+"i am learning machine learning",
+"do you like programming",
+"machine learning is very powerful"
+];
 
-            if (words.length < 2) {
-                document.getElementById("output").innerText = "Type at least 2 words";
-                return;
-            }
+function predictText() {
 
-            let lastTwo = words.slice(-2).join(" ");
-            let tokens = trainingText.toLowerCase().split(/\s+/);
+    let inputText = document.getElementById("userInput").value.toLowerCase().trim();
+    let words = inputText.split(" ");
 
-            let firstPrediction = "";
-            let secondPrediction = "";
+    if (words.length < 2) {
+        document.getElementById("output").innerText = "Type at least 2 words";
+        return;
+    }
 
-            for (let i = 0; i < tokens.length - 2; i++) {
-                if (tokens[i] + " " + tokens[i+1] === lastTwo) {
-                    firstPrediction = tokens[i+2];
-                    break;
+    let lastTwo = words.slice(-2).join(" ");
+
+    let firstWord = "";
+    let secondWord = "";
+
+    for (let sentence of trainingText) {
+        let tokens = sentence.split(" ");
+
+        for (let i = 0; i < tokens.length - 2; i++) {
+
+            if (tokens[i] + " " + tokens[i+1] === lastTwo) {
+
+                firstWord = tokens[i+2];
+
+                if (i+3 < tokens.length) {
+                    secondWord = tokens[i+3];
                 }
-            }
 
-            if (firstPrediction === "") {
-                document.getElementById("output").innerText = "No suggestion available";
-                return;
-            }
-
-            for (let i = 0; i < tokens.length - 2; i++) {
-                if (tokens[i] === words[words.length-1] && tokens[i+1] === firstPrediction) {
-                    secondPrediction = tokens[i+2];
-                    break;
-                }
-            }
-
-            let finalPrediction = firstPrediction;
-            if (secondPrediction !== "") {
-                finalPrediction += " " + secondPrediction;
-            }
-
-            document.getElementById("output").innerText = "Suggestion: " + finalPrediction;
-        }
-
-        function addSentence() {
-            let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
-            if (newSentence !== "") {
-                trainingText += " " + newSentence;
-                document.getElementById("customInput").value = "";
-                alert("Sentence added successfully!");
+                break;
             }
         }
-    </script>
+    }
+
+    if (firstWord === "") {
+        document.getElementById("output").innerText = "No suggestion available";
+        return;
+    }
+
+    let result = firstWord;
+    if (secondWord !== "") {
+        result += " " + secondWord;
+    }
+
+    document.getElementById("output").innerText = "Suggestion: " + result;
+}
+
+function addSentence() {
+    let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
+    if (newSentence !== "") {
+        trainingText.push(newSentence);
+        document.getElementById("customInput").value = "";
+        alert("Sentence added successfully!");
+    }
+}
+
+</script>
+
 
 </body>
 </html>
