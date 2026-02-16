@@ -35,30 +35,49 @@
     <div id="output"></div>
 
     <script>
-        function predictText() {
-    let text = document.getElementById("userInput").value.toLowerCase();
-    let words = text.split(" ");
-    let lastWord = words[words.length - 1];
+        <script>
+    function predictText() {
+        let inputText = document.getElementById("userInput").value.toLowerCase().trim();
+        let words = inputText.split(" ");
+        let lastWord = words[words.length - 1];
 
-    let suggestions = {
-        "i": ["am", "love", "want"],
-        "am": ["learning", "happy", "ready"],
-        "how": ["are", "is", "to"],
-        "are": ["you", "we", "they"],
-        "hello": ["there", "friend"]
-    };
+        // Training dataset (can be expanded)
+        let trainingText = `
+        i am learning machine learning
+        i am learning web development
+        i love coding and programming
+        do you like machine learning
+        do you want to learn coding
+        how are you doing today
+        machine learning is very powerful
+        we are building predictive text model
+        you are doing great work
+        they are learning javascript
+        `;
 
-    let result = "";
+        let tokens = trainingText.toLowerCase().split(/\s+/);
 
-    if (suggestions[lastWord]) {
-        let randomIndex = Math.floor(Math.random() * suggestions[lastWord].length);
-        result = suggestions[lastWord][randomIndex];
-    } else {
-        result = "No suggestion available";
+        let predictions = [];
+
+        // Bigram logic
+        for (let i = 0; i < tokens.length - 1; i++) {
+            if (tokens[i] === lastWord) {
+                predictions.push(tokens[i + 1]);
+            }
+        }
+
+        let result = "";
+
+        if (predictions.length > 0) {
+            let randomIndex = Math.floor(Math.random() * predictions.length);
+            result = predictions[randomIndex];
+        } else {
+            result = "No suggestion available";
+        }
+
+        document.getElementById("output").innerText = "Suggestion: " + result;
     }
-
-    document.getElementById("output").innerText = "Suggestion: " + result;
-}
+</script>
 
     </script>
 
