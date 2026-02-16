@@ -24,67 +24,37 @@
         }
     </style>
 </head>
-
 <body>
 
-<h1>Predictive Text Generator</h1>
+    <h1>Predictive Text Generator</h1>
 
-<input type="text" id="userInput" placeholder="Type something...">
-<br><br>
-<button onclick="predictText()">Predict</button>
+    <input type="text" id="userInput" placeholder="Type something...">
+    <br><br>
+    <button onclick="predictText()">Predict</button>
 
-<div id="output"></div>
+    <div id="output"></div>
 
-<br><br>
-<h3>Add Custom Sentence</h3>
-<input type="text" id="customInput" placeholder="Enter new sentence">
-<br><br>
-<button onclick="addSentence()">Add Sentence</button>
+    <script>
+        function predictText() {
+            let text = document.getElementById("userInput").value.toLowerCase();
+            let result = "";
 
-<script>
+            if (text.includes("i love")) {
+                result = "coding ❤️";
+            } 
+            else if (text.includes("i am")) {
+                result = "learning web development 🚀";
+            }
+            else if (text.includes("hello")) {
+                result = "how are you?";
+            }
+            else {
+                result = "Try typing: I love / I am / Hello";
+            }
 
-let trainingText = `
-i love programming
-i love machine learning
-machine learning is powerful
-how are you
-do you like coding
-`;
-
-function predictText() {
-    let inputText = document.getElementById("userInput").value.toLowerCase().trim();
-    let words = inputText.split(" ");
-    let lastWord = words[words.length - 1];
-
-    let tokens = trainingText.toLowerCase().split(/\s+/);
-    let predictions = [];
-
-    for (let i = 0; i < tokens.length - 1; i++) {
-        if (tokens[i] === lastWord) {
-            predictions.push(tokens[i + 1]);
+            document.getElementById("output").innerText = "Suggestion: " + result;
         }
-    }
-
-    if (predictions.length > 0) {
-        let randomIndex = Math.floor(Math.random() * predictions.length);
-        document.getElementById("output").innerText =
-            "Suggestion: " + predictions[randomIndex];
-    } else {
-        document.getElementById("output").innerText =
-            "No suggestion available";
-    }
-}
-
-function addSentence() {
-    let newSentence = document.getElementById("customInput").value.toLowerCase().trim();
-    if (newSentence !== "") {
-        trainingText += " " + newSentence;
-        document.getElementById("customInput").value = "";
-        alert("Sentence added successfully!");
-    }
-}
-
-</script>
+    </script>
 
 </body>
 </html>
